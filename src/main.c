@@ -20,19 +20,23 @@ int main() {
 
     unsigned int width = DisplayWidth(dpy, screen_num);
     unsigned int height = DisplayHeight(dpy, screen_num);
+    XSetBackground(dpy, g, XBlackPixelOfScreen(DefaultScreenOfDisplay(dpy)));
+    XSetWindowBackground(dpy, root, XBlackPixelOfScreen(DefaultScreenOfDisplay(dpy)));
+    XSetForeground(dpy, g, XWhitePixelOfScreen(DefaultScreenOfDisplay(dpy)));
     XClearWindow(dpy, root);
     XFlush(dpy);
 
-    XSetForeground(dpy, g, XWhitePixelOfScreen(DefaultScreenOfDisplay(dpy)));
+    boid test_boid = {0};
+    test_boid.position.x = 500;
+    test_boid.position.y = 500;
+    test_boid.rotation = PI;
+
 
     while(1) {
-        boid_draw(NULL, dpy, &root, &g);
-
-        if(random()%500 < 1) {
-            XClearWindow(dpy, root);
-        }
-
+        XClearWindow(dpy, root);
+        boid_update(&test_boid, dpy, &root, &g);
+        boid_draw(&test_boid, dpy, &root, &g);
         XFlush(dpy);
-        usleep(1000*500);
+        usleep(1000 * 50);
     }
 }

@@ -9,7 +9,7 @@ BUILD_DIR := ./build
 SRC_DIRS := ./src
 
 CFLAGS := -O3
-LINKERFLAGS := -lX11
+LINKERFLAGS := -lm -lX11
 
 # Find all the C files we want to compile
 # Note the single quotes around the * expressions. Make will incorrectly expand these otherwise.

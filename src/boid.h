@@ -6,14 +6,22 @@
 #include "anna-layer.h"
 #include "vector.h"
 
-#define BOID_SCALE 5
+#define BOID_SCALE 10.0
+
+// N.B. while vertical
+#define BOID_WIDTH 2.0*BOID_SCALE
+
+// N.B. while vertical
+#define BOID_HEIGHT 3.0*BOID_SCALE
+
+#define BOID_SPEED 10
 
 typedef struct {
     XPoint position;
     float rotation;
-}Boid;
+}boid;
 
 #endif
 
-extern void boid_draw(Boid* boid, Display* dpy, Window* win, GC* g);
-extern void boid_update(Boid* boid, Display* dpy, Window* win, GC* g);
+extern void boid_draw(boid* boid, Display* dpy, Window* win, GC* g);
+extern void boid_update(boid* boid, Display* dpy, Window* win, GC* g);
