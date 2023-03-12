@@ -28,6 +28,9 @@ $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(LINKERFLAGS) -c $< -o $@
 
+run: $(TARGET_EXEC)
+	./$(TARGET_EXEC) -s
+
 
 .PHONY: clean
 clean:
