@@ -29,7 +29,7 @@ $(BUILD_DIR)/%.c.o: %.c
 	$(CC) $(CFLAGS) $(LINKERFLAGS) -c $< -o $@
 
 run: $(TARGET_EXEC)
-	./$(TARGET_EXEC) -s
+	./$(TARGET_EXEC) --standalone --boid-count=5
 
 
 .PHONY: clean

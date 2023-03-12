@@ -17,12 +17,7 @@ local XPoint BOID_STRUCTURE[] = {
 
 
 
-void boid_update(boid* boid, Display* dpy, Window* win, GC* g) {
-    boid->rotation += 0.3;
-    if (boid->rotation > 2*PI) {
-        boid->rotation = 0;
-    }
-
+void boid_update(boid* boid) {
     short delta_x = cosf(boid->rotation - PI/2) * BOID_SPEED;
     short delta_y = sinf(boid->rotation - PI/2) * BOID_SPEED;
 

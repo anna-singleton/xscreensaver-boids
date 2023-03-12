@@ -1,37 +1,54 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <getopt.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
 #include "vroot.h"
 #include "boid.h"
+#include "state.h"
+#include <time.h>
 
-enum ProgramMode {
-    STANDALONE,
-    XSCREENSAVER,
-};
+static int is_standalone = 0;
 
 int main(int argc, char** argv) {
-    enum ProgramMode mode = XSCREENSAVER;
+    static struct option long_options[] = {
+        {"standalone", no_argument, &is_standalone, 1},
+        {"boid-count", optional_argument, NULL, 'c'},
+        {"boid-scale", optional_argument, NULL, 's'},
+        {"boid-speed", optional_argument, NULL, 'v'}
+    };
+
+    srand((unsigned int)time(NULL));
+
+    int boid_count = 10;
+    int boid_scale = 10;
+    int boid_speed = 10;
 
     int opt;
-    while ((opt = getopt(argc,argv,"s")) != -1){
-        switch (opt) {
-        case 's':
-            mode = STANDALONE;
-            printf("Running in standalone mode\n");
-            break;
-        default:
-            fprintf(stderr, "Unknown option.");
-            return 1;
+    int option_index;
+    while ((opt = getopt_long(argc, argv, "", long_options, &option_index)) != -1){
+        if(optarg) {
+            printf("%s has optarg of %s\n", long_options[option_index].name, optarg);
+            switch (option_index) {
+            case 1:
+                boid_count = atoi(optarg);
+                break;
+            case 2:
+                boid_scale = atoi(optarg);
+                break;
+            case 3:
+                boid_speed = atoi(optarg);
+                break;
+            }
         }
     }
 
     Display *dpy = XOpenDisplay(getenv("DISPLAY"));
     Window root;
 
-    switch (mode) {
-    case STANDALONE:
+    switch (is_standalone) {
+    case 1:
         root = XCreateWindow(dpy, DefaultRootWindow(dpy), 0, 0, 1600, 900, 0, CopyFromParent,
                                    InputOutput, CopyFromParent, 0, NULL);
         XTextProperty p;
@@ -44,7 +61,7 @@ int main(int argc, char** argv) {
         XSetClassHint(dpy, root, ch);
         XMapWindow(dpy, root);
         break;
-    case XSCREENSAVER:
+    case 0:
         root = DefaultRootWindow(dpy);
         break;
     }
@@ -64,16 +81,12 @@ int main(int argc, char** argv) {
     XClearWindow(dpy, root);
     XFlush(dpy);
 
-    boid test_boid = {0};
-    test_boid.position.x = 500;
-    test_boid.position.y = 500;
-    test_boid.rotation = PI;
-
+    state s = state_init(boid_count, boid_scale, boid_speed, wa.width, wa.height);
 
     while(1) {
         XClearWindow(dpy, root);
-        boid_update(&test_boid, dpy, &root, &g);
-        boid_draw(&test_boid, dpy, &root, &g);
+        state_update(&s);
+        state_draw(&s, dpy, &root, &g);
         XFlush(dpy);
         usleep(1000 * 50);
     }
