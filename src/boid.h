@@ -3,8 +3,13 @@
 
 #include <X11/X.h>
 #include <X11/Xlib.h>
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
 #include "anna-layer.h"
 #include "vector.h"
+#include "state.h"
+
 
 #define BOID_SCALE 10.0
 
@@ -24,7 +29,7 @@ typedef struct {
     float rotation;
 }boid;
 
-#endif
-
 extern void boid_draw(boid* boid, Display* dpy, Window* win, GC* g);
 extern void boid_update(boid* boid);
+
+#endif

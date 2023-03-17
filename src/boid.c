@@ -1,10 +1,4 @@
 #include "boid.h"
-#include "vector.h"
-#include <X11/X.h>
-#include <X11/Xlib.h>
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
 
 local void rotate_boid_point(float rot, short* x, short* y);
 

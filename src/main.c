@@ -5,9 +5,9 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "vroot.h"
-#include "boid.h"
 #include "state.h"
 #include <time.h>
+#include "boid.h"
 
 static int is_standalone = 0;
 

@@ -1,6 +1,4 @@
 #include "state.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 #define EDGE_BUFFER 10
 
