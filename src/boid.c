@@ -1,3 +1,4 @@
+#include <math.h>
 #include "boid.h"
 
 local void rotate_boid_point(float rot, short* x, short* y);
@@ -11,9 +12,19 @@ local XPoint BOID_STRUCTURE[] = {
 
 
 
-void boid_update(boid* boid) {
+void boid_update(boid* boid, int win_width, int win_height) {
     short delta_x = cosf(boid->rotation - PI/2) * BOID_SPEED;
     short delta_y = sinf(boid->rotation - PI/2) * BOID_SPEED;
+
+    if (boid->position.x + delta_x < 0 || boid->position.x + delta_x > win_width) {
+        delta_x *= -1;
+    }
+
+    if (boid->position.y + delta_y < 0 || boid->position.y + delta_y > win_height) {
+        delta_y *= -1;
+    }
+
+    boid->rotation = atan2(delta_y, delta_x) + PI/2;
 
     boid->position.x += delta_x;
     boid->position.y += delta_y;

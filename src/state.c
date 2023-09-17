@@ -19,12 +19,15 @@ state state_init(int boid_count, int boid_scale, int boid_speed, int window_widt
         s.boids[i].position.x = (short) EDGE_BUFFER + (rand()%(window_width - (EDGE_BUFFER/2)));
         s.boids[i].position.y = (short) EDGE_BUFFER + (rand()%(window_height - (EDGE_BUFFER/2)));
     }
+
+    s.win_width = window_width;
+    s.win_height = window_height;
     return s;
 }
 
 void state_update(state* s){
     for (int i=0; i < s->boid_count; i++) {
-        boid_update(&s->boids[i]);
+        boid_update(&s->boids[i], s->win_width, s->win_height);
     }
 }
 
